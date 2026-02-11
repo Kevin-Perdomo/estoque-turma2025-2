@@ -2,6 +2,8 @@ import Product from '../../../src/entities/Product';
 
 describe('Entidade Product', () => {
   
+    // Caminhos felizes
+    // instanciação do objeto a partir de dados válidos
     test('Deve instanciar um objeto da classe Product quando os dados forem válidos', () => {
         const barcode: string = '1234567890123';
         const name: string = "Coca Cola 2L";
@@ -16,41 +18,9 @@ describe('Entidade Product', () => {
             expect(product.getQuantityInStock()).toBe(0);
             expect(product.getOrderReferenceDays()).toBe(orderReferenceDays);
         }
-    });
+      });
 
-    test('Deve retorna um erro quando o código de barras for inválido', () => {
-        const barcode: string = "";
-        const name: string = "Coca Cola 2L";
-        const orderReferenceDays: number = 14;
-
-        const product = Product.create(barcode, name, orderReferenceDays);
-
-        expect(product).toBeInstanceOf(Error);
-    });
-
-    test('Deve retorna um erro quando o nome for inválido', () => {
-        const barcode: string = "2412412412";
-        const name: string = "";
-        const orderReferenceDays: number = 14;
-
-        const product = Product.create(barcode, name, orderReferenceDays);
-
-        expect(product).toBeInstanceOf(Error);
-    });    
-
-    test('Deve retorna um erro quando o orderReferenceDays não for positivo', () => {
-        const barcode: string = "2412412412";
-        const name: string = "Coca Cola 2L";
-
-        let orderReferenceDays: number = -2;
-        const product = Product.create(barcode, name, orderReferenceDays);
-        expect(product).toBeInstanceOf(Error);
-
-        orderReferenceDays = 0;
-        const productZero = Product.create(barcode, name, orderReferenceDays);
-        expect(productZero).toBeInstanceOf(Error);
-    });    
-    
+    // reconstrução do objeto a partir de dados válidos
     test('Deve reconstruir um objeto da classe Product', () => {
         const barcode: string = '1234567890123';
         const name: string = "Coca Cola 2L";
@@ -65,4 +35,41 @@ describe('Entidade Product', () => {
         expect(product.getQuantityInStock()).toBe(quantityInStock);
         expect(product.getOrderReferenceDays()).toBe(orderReferenceDays);
     });
+
+    // Caminhos tristes: 
+    // barcode inválido
+    test('Deve retorna um erro quando o código de barras for inválido', () => {
+        const barcode: string = "";
+        const name: string = "Coca Cola 2L";
+        const orderReferenceDays: number = 14;
+
+        const product = Product.create(barcode, name, orderReferenceDays);
+
+        expect(product).toBeInstanceOf(Error);
+    });
+
+    // name inválido
+    test('Deve retorna um erro quando o nome for inválido', () => {
+        const barcode: string = "2412412412";
+        const name: string = "";
+        const orderReferenceDays: number = 14;
+
+        const product = Product.create(barcode, name, orderReferenceDays);
+
+        expect(product).toBeInstanceOf(Error);
+    });    
+
+    // orderReferenceDays não positivo
+    test('Deve retorna um erro quando o orderReferenceDays não for positivo', () => {
+        const barcode: string = "2412412412";
+        const name: string = "Coca Cola 2L";
+
+        let orderReferenceDays: number = -2;
+        const product = Product.create(barcode, name, orderReferenceDays);
+        expect(product).toBeInstanceOf(Error);
+
+        orderReferenceDays = 0;
+        const productZero = Product.create(barcode, name, orderReferenceDays);
+        expect(productZero).toBeInstanceOf(Error);
+    });    
 });
